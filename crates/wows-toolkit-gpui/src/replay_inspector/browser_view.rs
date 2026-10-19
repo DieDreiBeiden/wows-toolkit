@@ -153,17 +153,15 @@ pub(crate) fn copy_replay_files(paths: &[PathBuf], window: &mut Window, cx: &mut
 
 /// Asks the game to play `replay`.
 ///
-/// The client takes a replay path on its command line, which is what the
-/// egui app's confirmed `OpenInGame` action does. A launch that fails says
-/// so rather than leaving the reader waiting for a window.
+/// The command is the one the egui app's confirmed `OpenInGame` action runs
+/// (`game_launch::replay_launch_command`). A launch that fails says so rather
+/// than leaving the reader waiting for a window.
 fn open_replay_in_game(wows_dir: &str, replay: &Path, window: &mut Window, cx: &mut App) {
-    let exe = Path::new(wows_dir).join("WorldOfWarships.exe");
-    let mut command = std::process::Command::new(&exe);
-    command.arg(replay);
+    let mut command = wows_toolkit_viewmodel::game_launch::replay_launch_command(Path::new(wows_dir), replay);
     match crate::child_process::prepare(&mut command).spawn() {
         Ok(_) => {}
         Err(err) => {
-            tracing::warn!("replay browser: {} could not be launched: {err}", exe.display());
+            tracing::warn!("replay browser: {:?} could not be launched: {err}", command.get_program());
             crate::toast::failed(err.to_string(), window, cx);
         }
     }

@@ -3976,9 +3976,10 @@ impl WowsToolkitApp {
         match action {
             crate::tab_state::ConfirmableAction::OpenInGame { replay_path } => {
                 let wows_dir = self.tab_state.persisted.read().settings.game.wows_dir.clone();
-                let exe = std::path::Path::new(&wows_dir).join("WorldOfWarships.exe");
-                let mut command = std::process::Command::new(exe);
-                command.arg(&replay_path);
+                let mut command = wows_toolkit_viewmodel::game_launch::replay_launch_command(
+                    std::path::Path::new(&wows_dir),
+                    &replay_path,
+                );
                 let _ = crate::hardening::prepare_child(&mut command, crate::gpu::PIN_VARS).spawn();
                 // Signal the replay parser to open the controls window.
                 // App-wide: opens the single reference window regardless of workspace.

@@ -26,6 +26,7 @@ pub mod breakdown;
 pub mod controls;
 pub mod fire_chance;
 pub mod formatting;
+pub mod game_launch;
 pub mod glyphs;
 pub mod index_rows;
 pub mod listing_row;

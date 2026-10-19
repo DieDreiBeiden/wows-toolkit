@@ -402,7 +402,7 @@ pub enum NotifyFileEvent {
 /// An action that requires user confirmation before executing.
 #[derive(Clone)]
 pub enum ConfirmableAction {
-    /// Launch WorldOfWarships.exe with the given replay path.
+    /// Launch the game client with the given replay path.
     OpenInGame { replay_path: PathBuf },
     /// Clear all session stats.
     ClearSessionStats,
